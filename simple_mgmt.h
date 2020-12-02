@@ -17,8 +17,6 @@
 # include "mgmt.h"
 # include "mutex.h"
 
-#define __DIR__ "MGMT"
-
 #include <stdio.h>
 #include <errno.h>
 #include <unistd.h>
