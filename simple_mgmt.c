@@ -414,12 +414,12 @@ int main (void)
 
 	while (retry < 100)
 	{
-		CHECK_WARN (mgmt_hci_enable () != 0, "Cannot enable hci");
-		sleep (3);
-		CHECK_ERR_GOTO (mgmt_check_status () != 0, "Invalid hci status");
-		sleep (1);
 		CHECK_WARN (mgmt_hci_disable () != 0, "Cannot disable hci");
 		sleep (3);
+		CHECK_WARN (mgmt_hci_enable () != 0, "Cannot enable hci");
+		sleep (1);
+		CHECK_ERR_GOTO (mgmt_check_status () != 0, "Invalid hci status");
+		sleep (1);
 		retry++;
 	}
 
