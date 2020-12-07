@@ -274,7 +274,7 @@ int mgmt_set_local_name(const char* name)
 	CHECK_ERR_GOTO (mutex_lock (&mgmt_lock), "Cannot lock mutex");
 	PRINT_DEBUG ("Set op 0x%x", MGMT_OP_SET_LOCAL_NAME);
 	memset (&cmd.mgmt_name, 0, sizeof(cmd.mgmt_name));
-	memcpy (cmd.mgmt_name.short_name, name, MIN(10, strlen(name)));
+	memcpy (cmd.mgmt_name.short_name, name, MIN(MGMT_MAX_SHORT_NAME_LENGTH - 1, strlen(name)));
 	memcpy (cmd.mgmt_name.name, name, strlen(name));
 
 	CHECK_ERR_GOTO (ble_fd < 0, "Invalid socket");
