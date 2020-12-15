@@ -181,11 +181,6 @@ retry:
 		PRINT_WARN ("HCI Advertising is not enabled");
 		*status = 1;
 	}
-	else if ((current & MGMT_SETTING_BONDABLE) == 0)
-	{
-		PRINT_WARN ("HCI Bondable mode is not enabled");
-		*status = 1;
-	}
 	else if ((current & MGMT_SETTING_CONNECTABLE) == 0)
 	{
 		PRINT_WARN ("HCI Connectable mode is not enabled");
@@ -373,7 +368,7 @@ int mgmt_hci_enable (void)
 		CHECK_INFO (mgmt_set_simple_setting (0x01, MGMT_OP_SET_LE) != 0, "Cannot set le");
 		CHECK_INFO (mgmt_set_simple_setting (0x01, MGMT_OP_SET_BREDR) != 0, "Cannot set bredr");
 		CHECK_INFO (mgmt_set_simple_setting (0x01, MGMT_OP_SET_CONNECTABLE) != 0, "Cannot set connectable");
-		CHECK_INFO (mgmt_set_simple_setting (0x01, MGMT_OP_SET_BONDABLE) != 0, "Cannot set bondable");
+		CHECK_INFO (mgmt_set_simple_setting (0x00, MGMT_OP_SET_BONDABLE) != 0, "Cannot set bondable");
 		CHECK_INFO (mgmt_set_discoverable (0x01, 0x00) != 0, "Cannot set discoverable");
 		CHECK_INFO (mgmt_set_local_name ("VERY_LONG_BLE_NAME") != 0, "Cannot set local name");
 		// mgmt doc -> 0x02 should be the preferred mode of operation when implementing peripheral mode.
