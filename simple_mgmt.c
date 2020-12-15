@@ -13,8 +13,11 @@ static int handle_set_reply (int op)
 	char buf[MAX_PATH];
 	int n = 0;
 	int offset = 0;
+	int attempt = 5;
 
 retry:
+	CHECK_INF_GOTO (attempt <= 0, "Reach max attempt. No more retry");
+
 	// Wait up to two seconds.
 	tv.tv_sec = 2;
 	tv.tv_usec = 0;
@@ -55,11 +58,13 @@ retry:
 		memcpy (&status, &buf[offset], sizeof(status));
 		offset += sizeof(status);
 		PRINT_INFO ("Error on reply. Status : 0x%x (%s)", status.status, mgmt_errstr(status.status));
+		attempt--;
 		goto retry;
 	}
 	if (le16toh(answer.opcode) != MGMT_EV_CMD_COMPLETE)
 	{
 		PRINT_DEBUG ("Unexpected op code 0x%x", le16toh(answer.opcode));
+		attempt--;
 		goto retry;
 	}
 	CHECK_ERR_GOTO (n < offset + (int)sizeof(evt), "Not enought data to fill evt (%d)", n);
@@ -85,9 +90,12 @@ static int handle_info_reply (int* status)
 	int n = 0;
 	int offset = 0;
 	uint32_t current;
+	int attempt = 5;
 
 	PRINT_DEBUG ("Check hci0 status..");
 retry:
+	CHECK_INF_GOTO (attempt <= 0, "Reach max attempt. No more retry");
+
 	// Wait up to two seconds.
 	tv.tv_sec = 2;
 	tv.tv_usec = 0;
@@ -124,6 +132,7 @@ retry:
 	if (le16toh(answer.opcode) != MGMT_EV_CMD_COMPLETE)
 	{
 		PRINT_DEBUG ("Unexpected op code 0x%x", le16toh(answer.opcode));
+		attempt--;
 		goto retry;
 	}
 	CHECK_ERR_GOTO (n < offset + (int)sizeof(evt), "Not enought data to fill evt (%d)", n);
@@ -132,6 +141,7 @@ retry:
 	if (le16toh(evt.opcode) != MGMT_OP_READ_INFO)
 	{
 		PRINT_DEBUG ("Unexpected answer complete op code 0x%x", le16toh(evt.opcode));
+		attempt--;
 		goto retry;
 	}
 	CHECK_ERR_GOTO (n < offset + (int)sizeof(info), "Not enought data to fill info (%d)", n);
