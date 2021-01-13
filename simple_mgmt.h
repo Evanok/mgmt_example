@@ -31,6 +31,16 @@
 # include "log.h"
 # include "macro.h"
 
+#define HCI_QUEUE_SIZE 10
+
+typedef enum
+{
+	HCI_INITIAL	= -1,
+	HCI_ENABLE	= 0,
+	HCI_DISABLE	= 1,
+	HCI_CHECK	= 2,
+} hci_enum;
+
 #define MIN(X, Y) (((X) < (Y)) ? (X) : (Y))
 static inline int hci_test_bit(int nr, void *addr)
 {
@@ -70,8 +80,11 @@ typedef struct __attribute__((__packed__))
 } str_mgmt_name_cmd_t;
 
 int mgmt_initialiation (void);
-int mgmt_clean (void);
-int mgmt_set_power (uint8_t val);
-int mgmt_get_power (void);
+int mgmt_set_simple_setting (uint8_t enable, int op);
+int mgmt_set_discoverable(uint8_t enable, uint16_t timeout);
+int mgmt_set_local_name(const char* name);
+int mgmt_check_status(int quiet);
+
+int hal_push_event_hci (hci_enum event);
 
 #endif /* !SIMPLE_MGMT_H_ */
