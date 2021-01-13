@@ -5,7 +5,7 @@ enable/disable hci and basic stuff through mgmt protocol (bluetooth socket HCI_C
 
 ## Summary
 
-- Code to manipulate hci through mgmt api in a synchrone way.
+- Code to manipulate hci through mgmt api in a asynchronous way.
 - inspired by https://github.com/kismetwireless/bluez-basic-monitor/blob/master/bluez-mgmtsock.c and btmgmt binary from Bluez.
 - Use synchrone code only. Always check reply from mgmt and double check current setting after command.
 - Add a retry system due to a lot of problem to get a success from mgmt (busy, failed, etc..)
@@ -18,7 +18,7 @@ the first usage and hciattach to avoid weird error from mgmt.
 ## test
 
 
-The code integrate a main to run basic tests. enable/disable hci 100 times
+The code integrate a main to run basic tests. enable/disable hci 20 times
 
 
 To run the test :
@@ -44,6 +44,3 @@ gcc -o simple_mgmt mutex.o simple_mgmt.o -lpthread
 ```
 
 ## issue
-
-- Run properly on embedded device. Tester with embedded imx7ulp and kernel 4.14.98
-- Cannot run properly on my x86 host. My computer just **freeze** ! Tested with Ubuntu 20.04 and XPS13 9300
